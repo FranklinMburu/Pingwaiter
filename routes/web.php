@@ -92,7 +92,7 @@ Route::group(['middleware' => ['auth', 'check.customer.email.ban', 'customer.log
     Route::post('/customer/contact', [ContactController::class, 'submit'])->name('customer.contact.submit');
 });
 
-Route::group(['middleware' => ['auth', 'no.customers']], function () {
+Route::group(['middleware' => ['auth', 'no.customers', 'restrict.demo']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Onboarding
