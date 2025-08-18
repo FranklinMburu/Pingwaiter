@@ -36,8 +36,11 @@ Route::get('/', [PageController::class, 'index'])->name('home');
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
-// Demo Login
-Route::get('/demo-login', [RegisterController::class, 'demoLogin'])->name('demo.login');
+// Demo Login (auto-login for demo user)
+use App\Http\Controllers\DemoController;
+Route::middleware(['web'])->group(function () {
+    Route::get('/demo-login', [DemoController::class, 'login'])->middleware('throttle:10,1')->name('demo.login');
+});
 
 // Social Login
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
