@@ -1,0 +1,64 @@
+.btn {
+  @apply font-medium leading-none px-3.5 py-3 flex-center inline-flex gap-2 rounded-lg w-max [&.b-light]:hover:text-white [&.b-solid]:text-white [&.b-solid]:hover:opacity-90 [&.b-outline]:border [&.b-outline]:hover:text-white [&.b-outline]:hover:border-transparent shrink-0 ac-transition;
+}
+.btn {
+  @apply [&.btn-primary-light]:bg-primary-200 [&.btn-primary-light]:text-primary-500 [&.btn-primary-light]:hover:bg-primary-500 [&.btn-secondary-light]:bg-secondary/20 [&.btn-secondary-light]:text-secondary [&.btn-secondary-light]:hover:bg-secondary [&.btn-danger-light]:bg-danger/20 [&.btn-danger-light]:text-danger [&.btn-danger-light]:hover:bg-danger [&.btn-warning-light]:bg-warning/20 [&.btn-warning-light]:text-warning [&.btn-warning-light]:hover:bg-warning [&.btn-success-light]:bg-success/20 [&.btn-success-light]:text-success [&.btn-success-light]:hover:bg-success [&.btn-info-light]:bg-info/20 [&.btn-info-light]:text-info [&.btn-info-light]:hover:bg-info [&.btn-disable-light]:bg-disable/20 [&.btn-disable-light]:text-disable [&.btn-disable-light]:hover:bg-disable [&.btn-light-light]:bg-light/20 [&.btn-light-light]:text-light [&.btn-light-light]:hover:bg-light [&.btn-pink-light]:bg-pink/20 [&.btn-pink-light]:text-pink [&.btn-pink-light]:hover:bg-pink [&.btn-extra-light]:bg-extra/20 [&.btn-extra-light]:text-extra [&.btn-extra-light]:hover:bg-extra;
+}
+.btn {
+  @apply [&.btn-primary-solid]:bg-primary-500 [&.btn-secondary-solid]:bg-secondary [&.btn-danger-solid]:bg-danger [&.btn-warning-solid]:bg-warning [&.btn-success-solid]:bg-success [&.btn-info-solid]:bg-info [&.btn-disable-solid]:bg-disable [&.btn-light-solid]:bg-light [&.btn-pink-solid]:bg-pink [&.btn-extra-solid]:bg-extra;
+}
+.btn {
+  @apply [&.btn-primary-outline]:text-primary-500 [&.btn-primary-outline]:border-primary-500/50 [&.btn-primary-outline]:hover:bg-primary-500 [&.btn-secondary-outline]:text-secondary [&.btn-secondary-outline]:border-secondary/50 [&.btn-secondary-outline]:hover:bg-secondary [&.btn-danger-outline]:text-danger [&.btn-danger-outline]:border-danger/50 [&.btn-danger-outline]:hover:bg-danger [&.btn-warning-outline]:text-warning [&.btn-warning-outline]:border-warning/50 [&.btn-warning-outline]:hover:bg-warning [&.btn-success-outline]:text-success [&.btn-success-outline]:border-success/50 [&.btn-success-outline]:hover:bg-success [&.btn-info-outline]:text-info [&.btn-info-outline]:border-info/50 [&.btn-info-outline]:hover:bg-info [&.btn-disable-outline]:text-disable [&.btn-disable-outline]:border-disable/50 [&.btn-disable-outline]:hover:bg-disable [&.btn-light-outline]:text-light [&.btn-light-outline]:border-light/50 [&.btn-light-outline]:hover:bg-light [&.btn-pink-outline]:text-pink [&.btn-pink-outline]:border-pink/50 [&.btn-pink-outline]:hover:bg-pink [&.btn-extra-outline]:text-extra [&.btn-extra-outline]:border-extra/50 [&.btn-extra-outline]:hover:bg-extra;
+}
+.btn {
+  @apply [&.btn-link]:text-primary-500 [&.btn-link]:underline [&.btn-link]:p-0;
+}
+.btn {
+  @apply [&.b-outline-static]:border [&.b-outline-static]:hover:bg-transparent;
+}
+.btn-icon {
+  @apply flex-center leading-none size-11 rounded-50 [&.b-solid]:text-white;
+}
+.btn-icon {
+  @apply [&.btn-primary-icon-light]:bg-primary-500/20 [&.btn-primary-icon-light]:text-primary-500 [&.btn-secondary-icon-light]:bg-secondary/20 [&.btn-secondary-icon-light]:text-secondary [&.btn-danger-icon-light]:bg-danger/20 [&.btn-danger-icon-light]:text-danger [&.btn-warning-icon-light]:bg-warning/20 [&.btn-warning-icon-light]:text-warning [&.btn-info-icon-light]:bg-info/20 [&.btn-info-icon-light]:text-info [&.btn-success-icon-light]:bg-success/20 [&.btn-success-icon-light]:text-success;
+}
+.btn-icon {
+  @apply [&.btn-primary-icon-solid]:bg-primary-500 [&.btn-secondary-icon-solid]:bg-secondary [&.btn-danger-icon-solid]:bg-danger [&.btn-warning-icon-solid]:bg-warning [&.btn-success-icon-solid]:bg-success [&.btn-info-icon-solid]:bg-info [&.btn-extra-icon-solid]:bg-extra;
+}
+.btn {
+  @apply dark:[&.btn-primary-light]:bg-primary-600/10;
+}
+.btn {
+  @apply [&.btn-sm]:text-[14px] [&.btn-sm]:rounded-md [&.btn-sm]:px-2.5 [&.btn-sm]:py-2;
+}
+.btn {
+  @apply [&.btn-lg]:sm:text-[18px] [&.btn-lg]:rounded-lg [&.btn-lg]:px-4 [&.btn-lg]:py-3 [&.btn-lg]:sm:px-5 [&.btn-lg]:sm:py-4;
+}
+.btn {
+  @apply [&.btn-xl]:sm:text-[20px] [&.btn-xl]:rounded-[12px] [&.btn-xl]:px-6 [&.btn-xl]:py-4 [&.btn-xl]:sm:px-8 [&.btn-xl]:sm:py-5;
+}
+.menu-hamburger {
+  @apply relative flex-center text-gray-900 dark:text-dark-text-two size-11 border border-transparent hover:border-gray-200 dark:hover:border-dark-border rounded-50 before:position-center before:font-remix before:text-2xl before:font-medium group-data-[sidebar-size=lg]:before:content-['\ef3d'] group-data-[sidebar-size=sm]:before:content-['\ef40'] ac-transition;
+}
+.dropdown-button {
+  @apply relative after:absolute after:font-remix after:text-[16px] after:content-['\ea6e'] after:leading-none after:top-1/2 after:-translate-y-1/2 after:right-3.5 [&.show]:after:rotate-90 after:ac-transition group-data-[sidebar-size=sm]:[&.show]:after:rotate-0 group-data-[sidebar-size=sm]:after:hidden;
+}
+.faq-accordion-button {
+  @apply relative [&.chevron]:after:absolute [&.chevron]:after:top-1/2 [&.chevron]:after:-translate-y-1/2 [&.chevron]:after:right-4 [&.chevron]:sm:after:right-10 [&.chevron]:after:font-remix [&.chevron]:after:content-['\ea4e'] [&.chevron]:after:size-4 [&.chevron]:after:flex [&.chevron]:after:items-center [&.chevron]:after:justify-center [&.chevron]:after:ac-transition [&.chevron]:[&.open]:after:-rotate-180 [&.chevron]:after:text-gray-900 dark:text-dark-text;
+}
+.prism-toggle {
+  @apply border border-primary-500/15 bg-primary-500/10 py-3;
+}
+
+.toggle-dark-btn {
+  @apply w-20 h-11 border border-[#E8ECF6] bg-white before:font-remix before:text-2xl before:absolute before:-translate-y-1/2 before:left-2.5 before:top-1/2 after:font-remix after:text-2xl after:absolute after:-translate-y-1/2 after:right-2.5 after:top-1/2;
+}
+.toggle-dark-dot {
+  @apply absolute left-1 top-1 bg-[#F1EEFF] w-9 h-9 transition peer-checked/draft:translate-x-full before:font-remix before:text-2xl before:position-center;
+}
+.com-accordion-button {
+  @apply relative w-full text-left text-sm text-gray-500 dark:text-dark-text font-semibold p-4 [&.chevron]:after:absolute [&.chevron]:after:top-1/2 [&.chevron]:after:-translate-y-1/2 [&.chevron]:after:right-4 [&.chevron]:after:font-remix [&.open]:after:text-primary-500 [&.open]:after:border-primary-500 [&.chevron]:after:text-xl [&.chevron]:after:font-normal [&.chevron]:after:border [&.chevron]:after:rounded-50 [&.chevron]:after:size-6 [&.chevron]:after:flex [&.chevron]:after:items-center [&.chevron]:after:justify-center [&.chevron]:after:ac-transition [&.chevron]:[&.open]:after:-rotate-180 [&.chevron]:after:text-gray-900;
+}
+.stepper-step-btn {
+  @apply bg-gray-100 text-gray-500 text-lg shrink-0 w-[200px] h-15 flex-center font-semibold leading-none [&.active]:bg-primary-500 [&.active]:text-white group-[.dragging]/stepper-menu:pointer-events-none;
+}

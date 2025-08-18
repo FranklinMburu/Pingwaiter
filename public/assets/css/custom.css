@@ -1,0 +1,52 @@
+body {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+@media (min-width: 1280px) {
+    .header {
+        margin-left: calc(280px + 40px);
+    }
+    .main-content {
+        margin-left: calc(280px + 40px);
+    }
+}
+
+.rounded-l-full {
+    border-top-left-radius: 9999px;
+    border-bottom-left-radius: 9999px;
+}
+
+.resize-none {
+    resize: none;
+}
+
+.sound-toggle {
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+}
+
+.sound-on {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.sound-on:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.sound-off {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.sound-off:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}

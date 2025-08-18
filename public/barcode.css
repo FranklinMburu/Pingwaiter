@@ -1,0 +1,10 @@
+.barcode-container {
+    max-width: 350px; /* Set maximum width */
+    min-width: 350px;
+    overflow: hidden; /* Hide overflow if the barcode exceeds max-width */
+  }
+  
+  .barcode-container img, .barcode-container svg {
+    width: 100%; /* Scale the barcode to fit the container */
+    height: auto; /* Maintain the aspect ratio */
+  }

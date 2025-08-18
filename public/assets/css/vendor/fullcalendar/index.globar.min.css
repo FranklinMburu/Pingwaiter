@@ -1,0 +1,40 @@
+.fc .fc-toolbar {
+  @apply flex-col gap-4 sm:flex-row;
+}
+.fc .fc-toolbar-title {
+  @apply font-semibold text-2xl text-heading dark:text-dark-text;
+}
+.fc .fc-button-group {
+  @apply gap-2;
+}
+.fc .fc-button {
+  @apply !rounded-md;
+}
+.fc .fc-button-primary {
+  @apply bg-primary-500 !border-none hover:bg-primary-600 active:!bg-primary-500 focus:!shadow-none active:scale-95 disabled:bg-gray-500 disabled:active:!bg-gray-500 disabled:active:scale-100;
+}
+.fc .fc-button-primary:not(:disabled).fc-button-active,
+.fc .fc-button-primary:not(:disabled):active {
+  @apply bg-light;
+}
+
+.fc-theme-standard .fc-scrollgrid,
+.fc-theme-standard td,
+.fc-theme-standard th {
+  @apply border-input-border dark:border-dark-border-four;
+}
+
+.fc .fc-col-header-cell-cushion {
+  @apply text-heading dark:text-dark-text;
+}
+
+.fc .fc-day-other .fc-daygrid-day-top {
+  @apply text-gray-900 dark:text-dark-text-two opacity-50;
+}
+.fc .fc-daygrid-day-number {
+  @apply text-gray-500 dark:text-dark-text;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  @apply bg-primary-200 dark:bg-dark-icon;
+}

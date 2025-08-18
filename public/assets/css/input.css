@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:wght@100..900&display=swap");
+@import url("../../assets/icon-font/remix/remixicon.css");
+@import url("../../assets/icon-font/summer/summer.css");
+@import url("../../assets/css/vendor/choices.min.css");
+
+@import url("../../assets/css/plugins/plugin.css");
+
+@import url("../../assets/css/components/aleart.css");
+@import url("../../assets/css/components/badge.css");
+@import url("../../assets/css/components/button.css");
+@import url("../../assets/css/components/card.css");
+@import url("../../assets/css/components/form.css");
+@import url("../../assets/css/components/navigation.css");
+@import url("../../assets/css/components/card.css");
+
+@import url("../../assets/css/utilities/utilities.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: "Urbanist", sans-serif;
+  }
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@layer utilities {
+  .position-center {
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+  }
+  .ac-transition {
+    @apply transition duration-300 ease-out;
+  }
+  .flex-center-between {
+    @apply flex items-center justify-between;
+  }
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .dk-theme-card-square {
+    @apply group-data-[card-style=square]:rounded-[4px];
+  }
+  .dk-theme-card-square-left {
+    @apply group-data-[card-style=square]:rounded-l-[4px];
+  }
+  .dk-theme-card-square-top {
+    @apply group-data-[card-style=square]:rounded-t-[4px];
+  }
+  .dk-theme-card-square-right {
+    @apply group-data-[card-style=square]:rounded-r-[4px];
+  }
+  .dk-theme-card-square-bottom {
+    @apply group-data-[card-style=square]:rounded-b-[4px];
+  }
+}

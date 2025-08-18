@@ -1,0 +1,9 @@
+.card {
+  @apply bg-white dark:bg-dark-card rounded-15 p-6 mb-4 dk-theme-card-square;
+}
+.card-title {
+  @apply text-xl leading-none font-semibold text-heading dark:text-white;
+}
+.card-description {
+  @apply font-spline_sans text-sm text-gray-900 dark:text-dark-text mt-2;
+}

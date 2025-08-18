@@ -1,0 +1,101 @@
+/*
+************************************************
+    INDEXING
+**************************************************
+01: GLOBAL
+02: CHECK & RADIO COMPONENT
+03: RATING
+04: COLOR PICK INPUT
+05: RANGE INPUT
+06: 
+*/
+
+/*************************************************
+    01: GLOBAL
+**************************************************/
+.form-label {
+  @apply leading-none text-sm text-gray-500 dark:text-dark-text font-medium mb-2.5 inline-block;
+}
+.form-input {
+  @apply font-spline_sans bg-transparent border border-input-border dark:border-dark-border text-gray-500 dark:text-dark-text text-sm rounded-lg focus:border-primary-500 block w-full h-11 p-3 dark:placeholder-gray-400 dk-theme-card-square outline-none;
+}
+.form-select {
+  @apply font-urbanist text-base text-gray-900 font-semibold border-gray-200 dark:border-dark-border w-32 h-9 py-0 rounded-md appearance-none bg-transparent bg-[url('../../assets/images/icons/dw-arr.svg')] bg-no-repeat bg-[center_right_0.75rem] dk-theme-card-square shrink-0;
+}
+.form-select-sm {
+  @apply text-xs font-normal w-[90px] h-8;
+}
+.form-select-calendar {
+  @apply bg-calendar bg-[length:18px_16px];
+}
+.form-input-group {
+  @apply form-input [&.input-icon]:border-e-0 [&.input-icon]:w-auto [&.input-icon]:text-primary-400 [&.input-icon]:px-4 [&.input-icon]:rounded-r-none [&.input-icon]:flex-center;
+}
+.file-input-label {
+  @apply font-spline_sans border border-input-border dark:border-dark-border rounded-lg w-full inline-flex cursor-pointer;
+}
+select option {
+  @apply dark:bg-dark-body;
+}
+input[disabled] {
+  border: 1px solid #999 !important;
+  color: #fff !important;
+  &:checked {
+    background-color: #999 !important;
+  }
+}
+input:disabled:checked:read-only {
+  background-color: transparent !important;
+}
+
+/*************************************************
+    02: CHECK & RADIO
+**************************************************/
+.check {
+  @apply appearance-none size-5 border-[1.5px] border-gray-900 rounded-[4px] relative text-white before:absolute before:font-remix before:size-full before:font-medium [&.rounded-full]:before:text-[15px] [&.rounded-full]:before:top-[1px] [&.rounded-full]:before:left-[1.5px] before:text-[18px] before:text-inherit before:inset-0 before:content-['\eb7b'] before:opacity-0 checked:before:opacity-100 before:leading-none;
+}
+.check {
+  @apply [&.check-primary-solid]:checked:bg-primary-500 [&.check-primary-solid]:border-primary-500 [&.check-secondary-solid]:checked:bg-secondary [&.check-secondary-solid]:border-secondary [&.check-danger-solid]:checked:bg-danger [&.check-danger-solid]:border-danger [&.check-warning-solid]:checked:bg-warning [&.check-warning-solid]:border-warning [&.check-success-solid]:checked:bg-success [&.check-success-solid]:border-success [&.check-info-solid]:checked:bg-info [&.check-info-solid]:border-info;
+}
+.check {
+  @apply [&.check-primary-outline]:text-primary-500 checked:[&.check-primary-outline]:border-primary-500 [&.check-secondary-outline]:text-secondary checked:[&.check-secondary-outline]:border-secondary [&.check-danger-outline]:text-danger checked:[&.check-danger-outline]:border-danger [&.check-info-outline]:text-info checked:[&.check-info-outline]:border-info [&.check-warning-outline]:text-warning checked:[&.check-warning-outline]:border-warning [&.check-success-outline]:text-success checked:[&.check-success-outline]:border-success;
+}
+.check {
+  @apply [&.check-md]:size-[18px];
+}
+.check {
+  @apply [&.check-sm]:size-4 [&.check-sm]:before:-top-0.5 [&.check-sm]:before:-left-0.5;
+}
+.radio {
+  @apply appearance-none flex-center size-[15px] rounded-50 border border-input-border dark:border-dark-border relative before:-translate-x-[0.5px] before:-translate-y-[0.5px] before:size-2.5 before:rounded-50 shrink-0;
+}
+.radio {
+  @apply [&.radio-primary]:checked:border-primary-500 [&.radio-primary]:checked:before:bg-primary-500;
+}
+
+/*************************************************
+  03: RATING
+**************************************************/
+.rate-input {
+  @apply -ms-4 size-5 bg-transparent border-0 text-transparent cursor-pointer disabled:cursor-default disabled:!border-0 appearance-none checked:!bg-none focus:bg-none focus:ring-0 focus:ring-offset-0;
+}
+.rate-label {
+  @apply text-[#E6E6E6] dark:text-dark-text pointer-events-none before:font-remix before:content-['\f186'] text-xl duration-200;
+}
+.readonly-rate {
+  @apply text-lg before:font-remix before:content-['\f186'] text-[#ECBC38] [&.no-rate]:text-[#E6E6E6];
+}
+
+/*************************************************
+  04: COLOR PICK INPUT
+**************************************************/
+.color-input {
+  @apply opacity-0 absolute bottom-0 size-0;
+}
+
+/*************************************************
+  05: RANGE INPUT
+**************************************************/
+.range-input {
+  @apply w-full h-4 absolute opacity-0 appearance-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:size-[18px] [&::-webkit-slider-thumb]:cursor-pointer;
+}

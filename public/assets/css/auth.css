@@ -1,0 +1,314 @@
+body {
+    font-family: "Lato", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Playfair Display", serif;
+}
+
+.wizard h3.title {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+.wizard > .steps {
+    display: none !important;
+}
+
+.custom-steps {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.step-circle {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid #e5e7eb;
+    background-color: #f9fafb;
+    color: #6b7280;
+}
+
+.step-circle.active {
+    background-color: #8065ee;
+    border-color: #8065ee;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
+}
+
+.step-circle.completed {
+    background-color: #8065ee;
+    border-color: #8065ee;
+    color: white;
+}
+
+.step-line {
+    width: 4rem;
+    height: 2px;
+    background-color: #e5e7eb;
+    margin: 0 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.step-line.completed {
+    background-color: #8065ee;
+}
+
+.step-label {
+    position: absolute;
+    top: 3.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+.step-label.active {
+    color: #8065ee;
+    font-weight: 600;
+}
+
+.step-label.completed {
+    color: #8065ee;
+}
+
+/* Custom wizard content styling */
+.wizard > .content {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    margin-bottom: 0;
+    min-height: auto;
+    padding: 0;
+}
+
+.wizard > .content > .body {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 0;
+}
+
+.wizard > .content > .body > h3 {
+    display: none !important;
+}
+
+/* Custom actions styling */
+.wizard > .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.wizard > .actions ul {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.wizard > .actions ul li {
+    display: inline-block;
+}
+
+.wizard > .actions a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    background-color: #8065ee;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.wizard > .actions a:hover:not(.disabled) {
+    background-color: #0f766e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+.wizard > .actions .disabled a {
+    background-color: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Form validation styling */
+label.error {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+input.error,
+select.error,
+textarea.error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Success animation */
+@keyframes checkmark {
+    0% {
+        stroke-dashoffset: 100;
+    }
+
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+.checkmark {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #8065ee;
+    stroke-miterlimit: 10;
+    margin: 10% auto;
+    box-shadow: inset 0px 0px 0px #8065ee;
+}
+
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #8065ee;
+    fill: none;
+    animation: checkmark 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: checkmark 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+/* Background image overlay */
+.bg-image-overlay {
+    position: relative;
+    background-image: url("/assets/images/hero.jpeg");
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-image-overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.4)
+    );
+    z-index: 1;
+}
+
+.bg-image-overlay > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Form container styling */
+.form-container {
+    background: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.form-header {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    padding: 2rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.form-content {
+    padding: 2rem;
+}
+
+/* Enhanced input styling */
+.form-input {
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+}
+
+/* Button enhancements */
+.btn-google {
+    transition: all 0.2s ease;
+}
+
+.btn-google:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-google {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    /* text-sm */
+    border-radius: 0.375rem;
+    /* rounded-md */
+    transition: background-color 0.2s;
+}
+
+.btn-google:hover {
+    background-color: #f3f4f6;
+}
+
+.auth-footer-link {
+    font-size: 0.875rem;
+    color: #4b5563;
+}
+
+.auth-footer-link:hover {
+    text-decoration: underline;
+    color: #1f2937;
+}

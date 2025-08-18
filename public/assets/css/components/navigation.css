@@ -1,0 +1,18 @@
+/************ CUSTOM BREADCRUMB **********/
+.custom-breadcrumb-outline {
+  @apply flex-center px-6 py-2.5 relative before:absolute before:w-full before:h-1/2 before:top-[0.5px] before:left-0 before:border before:border-b-transparent before:border-primary-500 before:skew-x-[40deg] after:absolute after:w-full after:h-1/2 after:bottom-[0.5px] after:left-0 after:border after:border-t-transparent after:border-primary-500 after:skew-x-[-40deg] group-[.current-page]/cb:before:border-[#999]/50 group-[.current-page]/cb:before:border-b-transparent group-[.current-page]/cb:after:border-[#999]/50 group-[.current-page]/cb:after:border-t-transparent;
+}
+.custom-breadcrumb-solid {
+  @apply text-white group-[.current-page]/cb:text-primary-500 dark:group-[.current-page]/cb:text-dark-text z-[1] flex-center px-6 py-2.5 relative before:absolute before:z-[-1] before:w-full before:h-1/2 before:top-0 before:left-0 before:bg-primary-500 before:skew-x-[40deg] after:absolute after:z-[-1] after:w-full after:h-1/2 after:bottom-0 after:left-0 after:bg-primary-500 after:skew-x-[-40deg] group-[.current-page]/cb:before:bg-primary-200 dark:group-[.current-page]/cb:before:bg-dark-icon group-[.current-page]/cb:after:bg-primary-200 dark:group-[.current-page]/cb:after:bg-dark-icon;
+}
+
+/************ CUSTOM PGINATION **********/
+.paginate {
+  @apply flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 dark:text-dark-text hover:bg-primary-500 hover:text-white duration-300 [&.active]:bg-primary-500 [&.active]:text-white;
+}
+.count-paginate {
+  @apply min-w-[40px] text-gray-900 dark:text-dark-text hover:text-white [&.active]:bg-primary-500 [&.active]:text-white hover:border-transparent dk-border-one rounded-md px-2 py-1.5 hover:bg-primary-500 duration-300 border-opacity-50;
+}
+.stock-paginate {
+  @apply paginate [&.active]:border-primary-500 [&.active]:bg-transparent [&.active]:text-primary-500 hover:bg-transparent border border-transparent hover:border-primary-500 hover:text-primary-500 rounded-full size-10;
+}
