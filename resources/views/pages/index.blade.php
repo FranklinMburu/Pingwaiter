@@ -116,15 +116,57 @@
 @section('content')
     <div class="flex min-h-screen">
         <div class="w-full max-w-5xl mx-auto flex flex-col relative my-28">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Get Started</h2>
-                <p class="text-gray-600 text-lg">Choose how you'd like to explore our platform</p>
+            <!-- Multi-Role Explainer -->
+            <div class="mb-8">
+                <div class="bg-white border border-gray-200 rounded-lg shadow p-6">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2 text-center">Welcome to Pingwaiter</h2>
+                    <p class="text-gray-700 text-center mb-4">A modern restaurant management platform supporting multiple roles:</p>
+                    <div class="flex flex-wrap justify-center gap-6 mb-2">
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-user-shield text-purple-700 text-2xl mb-1"></i>
+                            <span class="font-semibold">Admin</span>
+                            <span class="text-xs text-gray-500">Creates restaurant, manages staff, full access</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-store text-indigo-700 text-2xl mb-1"></i>
+                            <span class="font-semibold">Restaurant Owner</span>
+                            <span class="text-xs text-gray-500">Owns restaurant, manages menu/tables</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-user-friends text-gray-700 text-2xl mb-1"></i>
+                            <span class="font-semibold">Staff/Waiter</span>
+                            <span class="text-xs text-gray-500">Serves tables, manages orders</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-cash-register text-green-700 text-2xl mb-1"></i>
+                            <span class="font-semibold">Cashier</span>
+                            <span class="text-xs text-gray-500">Handles payments, receipts</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-utensils text-yellow-600 text-2xl mb-1"></i>
+                            <span class="font-semibold">Cook</span>
+                            <span class="text-xs text-gray-500">Prepares food, views orders</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-user text-blue-700 text-2xl mb-1"></i>
+                            <span class="font-semibold">Customer</span>
+                            <span class="text-xs text-gray-500">Places orders, earns rewards</span>
+                        </div>
+                    </div>
+                    <!-- Demo/Help link removed: route not defined -->
+                </div>
             </div>
 
+            <!-- Feedback Alerts -->
             <div class="w-full">
                 @if (session('error'))
-                    <div class="mb-6 bg-red-50 max-w-md mx-auto border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                        {{ session('error') }}
+                    <div class="mb-6 bg-red-50 max-w-md mx-auto border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-2"></i> {{ session('error') }}
+                    </div>
+                @endif
+                @if (session('info'))
+                    <div class="mb-6 bg-blue-50 max-w-md mx-auto border border-blue-200 text-blue-700 px-4 py-3 rounded-lg flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i> {{ session('info') }}
                     </div>
                 @endif
                 @if ($errors->any())
@@ -139,14 +181,37 @@
                 @endif
             </div>
 
-            <!-- Professional Two Column Layout -->
-            <div class="flex flex-col lg:flex-row items-start justify-center gap-12">
+            <!-- Admin/Staff Login Section -->
+            <div class="w-full flex flex-col md:flex-row items-center justify-center gap-8 mb-12">
+                <div class="flex flex-col gap-2 w-full md:w-1/2">
+                    <a href="{{ route('google.login', ['role' => 'admin']) }}" class="primary-btn border-2 border-purple-700 shadow-lg" style="background: linear-gradient(90deg, #6d28d9 0%, #8065ee 100%); color: #fff; font-size: 1.1rem;">
+                        <i class="fas fa-user-shield mr-2"></i>
+                        Admin Login (Google)
+                    </a>
+                    <span class="text-xs text-purple-700 font-semibold mt-1">First Google login will create an admin.<br><span class="italic text-gray-500">Admins can invite staff after login.</span></span>
+                </div>
+                <div class="flex flex-col gap-2 w-full md:w-1/2">
+                    <a href="{{ route('worker.login') }}" class="primary-btn border-2 border-gray-700 shadow-lg" style="background: #374151; color: #fff; font-size: 1.1rem;">
+                        <i class="fas fa-user-friends mr-2"></i>
+                        Staff/Waiter/Cashier/Cook Login
+                    </a>
+                    <span class="text-xs text-gray-700 font-semibold mt-1">Staff must use an invitation link or get invited by an admin.<br><span class="italic text-gray-500">If you are not staff, ask your admin for an invite.</span></span>
+                </div>
+            </div>
+            <div class="text-center mb-8">
+                <a href="{{ route('invitations.recover') }}" class="text-sm text-blue-700 underline font-semibold"><i class="fas fa-key mr-1"></i>Lost your invite? Recover Invitation</a>
+            </div>
+            @if (auth()->check() && auth()->user()->role === 'admin' && (auth()->user()->is_first_user ?? false))
+                <div class="mb-6 max-w-lg mx-auto bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg text-center">
+                    <strong>Welcome, Admin!</strong> You are the first administrator. Access admin features from the sidebar. <a href="{{ route('onboarding.admin') }}" class="underline text-blue-700">View onboarding tips</a>.
+                </div>
+            @endif
 
+            <div class="flex flex-col lg:flex-row items-start justify-center gap-12">
                 <!-- Restaurant Owner Section -->
                 <div class="flex-1 max-w-sm w-full mx-auto">
                     <div class="section-card">
                         <h3 class="section-title restaurant-title">Restaurant Owner</h3>
-
                         <div class="space-y-4">
                             <a href="{{ route('register') }}" class="primary-btn restaurant-btn">
                                 <!-- Signup button icon -->
@@ -165,15 +230,7 @@
                                 <div class="flex-1 h-px bg-gray-300"></div>
                             </div>
 
-                            <a href="{{ route('demo.login') }}" class="demo-btn">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                                    <line x1="8" y1="21" x2="16" y2="21" />
-                                    <line x1="12" y1="17" x2="12" y2="21" />
-                                </svg>
-                                Try Restaurant Owner Demo
-                            </a>
+
 
                             <!-- OR Separator -->
                             <div class="flex items-center space-x-4">
@@ -182,15 +239,7 @@
                                 <div class="flex-1 h-px bg-gray-300"></div>
                             </div>
 
-                            <a href="{{ route('google.login', ['role' => 'customer', 'table' => 'T001']) }}"
-                                class="demo-btn">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-                                    <line x1="12" y1="18" x2="12.01" y2="18" />
-                                </svg>
-                                Try Customer Menu Demo
-                            </a>
+                            @include('partials.try-demo-button')
 
                             <div class="text-center pt-4">
                                 <p class="text-gray-600">
@@ -231,15 +280,14 @@
                                 <div class="flex-1 h-px bg-gray-300"></div>
                             </div>
 
-                            <a href="{{ route('google.login', ['role' => 'customer', 'table' => 'T001']) }}"
-                                class="demo-btn">
+                            <button class="demo-btn opacity-60 cursor-not-allowed" title="Google login coming soon" disabled>
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2">
                                     <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
                                     <line x1="12" y1="18" x2="12.01" y2="18" />
                                 </svg>
-                                Try Customer Menu Demo
-                            </a>
+                                Try Customer Menu Demo (Google login coming soon)
+                            </button>
 
                             <div class="text-center pt-4">
                                 <p class="text-gray-600">

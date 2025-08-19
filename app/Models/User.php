@@ -33,7 +33,11 @@ class User extends Authenticatable implements BannableContract, HasMedia
         'password',
         'google_id',
         'avatar',
-        // 'role',
+        'role',
+        'is_first_user',
+        'invited_by',
+        'invitation_token',
+        'invitation_expires_at',
         'is_active',
         'restaurant_id',
         'stripe_subscription_id',
@@ -60,12 +64,96 @@ class User extends Authenticatable implements BannableContract, HasMedia
      * @var array<int, string>
      */
     protected $casts = [
-        // 'role' => WorkerDesignation::class,
         'email_verified_at' => 'datetime',
         'subscription_start_date' => 'datetime',
         'subscription_end_date' => 'datetime',
+        'invitation_expires_at' => 'datetime',
         'is_onboarded' => 'boolean',
+        'is_first_user' => 'boolean',
     ];
+
+    /**
+     * Validation rules for the role field.
+     */
+    public static function roleRules(): array
+    {
+        return [
+            'role' => 'required|in:admin,restaurant,waiter,cashier,cook',
+        ];
+    }
+    /**
+     * Relationship: The user who invited this user.
+     */
+    public function invitedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'invited_by');
+    }
+
+    /**
+     * Relationship: Users invited by this user.
+     */
+    public function invitedUsers()
+    {
+        return $this->hasMany(User::class, 'invited_by');
+    }
+
+    /**
+     * Query scopes for each role.
+     */
+    public function scopeAdmins($query)
+    {
+        return $query->where('role', 'admin');
+    }
+    public function scopeRestaurant($query)
+    {
+        return $query->where('role', 'restaurant');
+    }
+    public function scopeWaiters($query)
+    {
+        return $query->where('role', 'waiter');
+    }
+    public function scopeCashiers($query)
+    {
+        return $query->where('role', 'cashier');
+    }
+    public function scopeCooks($query)
+    {
+        return $query->where('role', 'cook');
+    }
+
+    /**
+     * Role check methods.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+    public function isRestaurant(): bool
+    {
+        return $this->role === 'restaurant';
+    }
+    public function isWaiter(): bool
+    {
+        return $this->role === 'waiter';
+    }
+    public function isCashier(): bool
+    {
+        return $this->role === 'cashier';
+    }
+    public function isCook(): bool
+    {
+        return $this->role === 'cook';
+    }
+
+    /**
+     * Make this user the first admin user.
+     */
+    public function makeFirstUserAdmin(): void
+    {
+        $this->role = 'admin';
+        $this->is_first_user = true;
+        $this->save();
+    }
 
     /**
      * Check if the user has an active subscription.
@@ -116,38 +204,5 @@ class User extends Authenticatable implements BannableContract, HasMedia
         return $this->subscription && $this->subscription->isActive();
     }
 
-    public function isAdmin(): bool
-    {
-        return $this->hasRole(WorkerDesignation::ADMIN->value);
-    }
-
-    public function isRestaurant(): bool
-    {
-        return $this->hasRole(WorkerDesignation::RESTAURANT->value);
-    }
-
-    public function isWaiter(): bool
-    {
-        return $this->hasRole(WorkerDesignation::WAITER->value);
-    }
-
-    public function isCustomer(): bool
-    {
-        return $this->hasRole(WorkerDesignation::CUSTOMER->value);
-    }
-
-    public function isCook(): bool
-    {
-        return $this->hasRole(WorkerDesignation::COOK->value);
-    }
-
-    public function isStaff(): bool
-    {
-        return $this->hasAnyRole([
-            WorkerDesignation::RESTAURANT->value,
-            WorkerDesignation::CASHIER->value,
-            WorkerDesignation::COOK->value,
-            WorkerDesignation::WAITER->value,
-        ]);
-    }
+    // ...existing code...
 }

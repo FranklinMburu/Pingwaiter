@@ -1,5 +1,5 @@
 <?php
-
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
@@ -25,9 +25,48 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\WorkerController;
-use Illuminate\Support\Facades\Route;
+
 
 require __DIR__.'/auth.php';
+use App\Http\Controllers\InviteController;
+use Illuminate\Http\Request;
+
+// Public: Accept Invitation (must be above any auth middleware group, now signed for extra security)
+Route::get('/invitations/accept/{token}', [InviteController::class, 'accept'])
+    ->name('invitations.accept')
+    ->middleware('signed');
+
+// Manual invitation token entry (for lost invitations)
+Route::get('/invitations/recover', function () {
+    return view('invitations.recover');
+})->name('invitations.recover');
+
+Route::post('/invitations/recover', function (Request $request) {
+    $request->validate(['token' => 'required|string']);
+    $url = URL::signedRoute('invitations.accept', ['token' => $request->token]);
+    return redirect($url);
+})->name('invitations.recover.submit');
+
+// Admin-only: Invitations and User Management
+use App\Http\Controllers\Admin\UserManagementController;
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/invitations', [InviteController::class, 'index'])->name('invitations.index');
+    Route::post('/invitations', [InviteController::class, 'store'])->name('invitations.store');
+    Route::post('/invitations/{invitation}/resend', [InviteController::class, 'resend'])->name('invitations.resend');
+    Route::post('/invitations/{invitation}/revoke', [InviteController::class, 'revoke'])->name('invitations.revoke');
+
+    // User management
+    Route::get('/admin/users', [UserManagementController::class, 'index'])->name('admin.users.index');
+    Route::post('/admin/users/{user}/promote', [UserManagementController::class, 'promote'])->name('admin.users.promote');
+    Route::post('/admin/users/{user}/demote', [UserManagementController::class, 'demote'])->name('admin.users.demote');
+});
+
+// Onboarding feedback for first admin after Google OAuth registration
+Route::get('/onboarding/admin', function () {
+    return view('onboarding.admin');
+})->name('onboarding.admin');
+
+
 
 // Landing Page
 Route::get('/', [PageController::class, 'index'])->name('home');
@@ -232,10 +271,16 @@ Route::get('/banned-notice', function () {
     return view('errors.banned');
 })->name('banned.notice');
 
-// Accept Invite
+
+// Accept Invite (signed for extra security)
 Route::get('/workers/invite/{token}', [InviteWorkerController::class, 'acceptInvite'])
     ->name('workers.accept-invite')
     ->middleware('signed');
+
+// Access denied feedback
+Route::get('/access-denied', function () {
+    return view('errors.access-denied');
+})->name('access.denied');
 
 Route::get('/itemdetail/{id}', [CustomerOrderController::class, 'itemDetail']);
 Route::delete('/getorderlist/{id}', [CustomerOrderController::class, 'getorderlist']);

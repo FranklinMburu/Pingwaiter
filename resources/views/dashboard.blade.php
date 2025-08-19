@@ -7,6 +7,50 @@
 @endpush
 
 @section('content')
+    @if (session('status'))
+        <div x-data="{ show: true }" x-show="show" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
+            <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg flex items-center gap-2 shadow relative">
+                <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span class="flex-1">{{ session('status') }}</span>
+                <button @click="show = false" class="absolute top-2 right-2 text-green-700 hover:text-green-900 focus:outline-none" aria-label="Dismiss alert">
+                    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+        </div>
+    @endif
+    @php
+        $user = auth()->user();
+        $isAdmin = $user->role === 'admin';
+        $isStaff = $user->role === 'staff' || $user->role === 'worker';
+    @endphp
+
+    @if ($isAdmin || $isStaff)
+        <div class="mb-8">
+            <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow">
+                <div>
+                    <h3 class="text-2xl font-bold text-indigo-800 mb-1">Welcome, {{ $user->name ?? $user->email }}!</h3>
+                    <p class="text-gray-700 mb-2">
+                        @if ($isAdmin)
+                            You have admin access. Use the quick links below to manage your team, invite staff, and configure your restaurant.
+                        @else
+                            You have staff access. Use the dashboard to view your assigned tasks and manage orders.
+                        @endif
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    @if ($isAdmin)
+                        <a href="{{ route('invitations.index') }}" class="btn btn-sm btn-primary">Invite Staff</a>
+                        <a href="{{ route('workers.index') }}" class="btn btn-sm btn-outline-primary">Manage Staff</a>
+                        <a href="{{ route('restaurants.index') }}" class="btn btn-sm btn-outline-primary">Restaurant Settings</a>
+                        <a href="{{ route('dashboard') }}" class="btn btn-sm btn-outline-primary">Admin Dashboard</a>
+                    @elseif ($isStaff)
+                        <a href="{{ route('dashboard') }}" class="btn btn-sm btn-primary">Staff Dashboard</a>
+                    @endif
+                </div>
+            </div>
+        </div>
+    @endif
+
     @if (auth()->user()->isRestaurant())
         <div class="grid grid-cols-12 gap-x-4">
             <!-- Period Selector and Download -->
