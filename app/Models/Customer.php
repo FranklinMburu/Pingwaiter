@@ -17,6 +17,8 @@ class Customer extends Model
         'preferences',
         'ban_reason',
         'banned_at',
+    ];
+
     protected $casts = [
         'preferences' => 'array',
         'banned_at'   => 'datetime',
@@ -30,6 +32,9 @@ class Customer extends Model
         }
         return $normalized;
     }
+
+    public function setPhoneAttribute($value)
+    {
         $normalized = preg_replace('/[\s\-\(\)]/', '', $value);
         if ($normalized && $normalized[0] !== '+') {
             $normalized = '+' . ltrim($normalized, '0');
@@ -51,6 +56,7 @@ class Customer extends Model
         $this->ban_reason = $reason;
         $this->banned_at = Carbon::now();
         $this->save();
+    }
 
     public function unban(): void
     {
