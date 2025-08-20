@@ -32,7 +32,6 @@
                                     <th class="px-6 py-4 border">Table Code</th>
                                     <th class="px-6 py-4 border">Table Size</th>
                                     <th class="px-6 py-4 border">Location</th>
-                                    <th class="px-6 py-4 border">IP Address</th>
                                     <th class="px-6 py-4 border">Status</th>
                                 </tr>
                                 <tr class="filters text-xs">
@@ -67,14 +66,6 @@
                                             <i
                                                 class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none z-10"></i>
                                             <input type="text" placeholder="Search location"
-                                                class="form-input w-full !pl-8 bg-white placeholder-gray-400" />
-                                        </div>
-                                    </th>
-                                    <th class="px-6 py-2 border">
-                                        <div class="relative">
-                                            <i
-                                                class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none z-10"></i>
-                                            <input type="text" placeholder="Search IP"
                                                 class="form-input w-full !pl-8 bg-white placeholder-gray-400" />
                                         </div>
                                     </th>

@@ -17,13 +17,10 @@ class Customer extends Model
         'preferences',
         'ban_reason',
         'banned_at',
-    ];
-
     protected $casts = [
         'preferences' => 'array',
         'banned_at'   => 'datetime',
     ];
-    // Accessor: Always return phone in E.164 format
     public function getPhoneAttribute($value)
     {
         // Remove spaces, dashes, parentheses, and ensure + prefix if missing
@@ -33,10 +30,6 @@ class Customer extends Model
         }
         return $normalized;
     }
-
-    // Mutator: Store phone in E.164 format
-    public function setPhoneAttribute($value)
-    {
         $normalized = preg_replace('/[\s\-\(\)]/', '', $value);
         if ($normalized && $normalized[0] !== '+') {
             $normalized = '+' . ltrim($normalized, '0');
@@ -44,24 +37,8 @@ class Customer extends Model
         $this->attributes['phone'] = $normalized;
     }
 
-    protected $dates = [
-        'banned_at',
-        'deleted_at',
-        'created_at',
-        'updated_at',
-    ];
-
-    // Relationships
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 
     // Scopes
-    public function scopeBanned(Builder $query): Builder
-    {
-        return $query->whereNotNull('banned_at');
-    }
 
     public function scopeActive(Builder $query): Builder
     {
@@ -74,7 +51,6 @@ class Customer extends Model
         $this->ban_reason = $reason;
         $this->banned_at = Carbon::now();
         $this->save();
-    }
 
     public function unban(): void
     {
