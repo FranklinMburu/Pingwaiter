@@ -25,6 +25,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\WorkerController;
+use App\Http\Controllers\AccountTypeController;
 
 
 require __DIR__.'/auth.php';
@@ -299,4 +300,10 @@ Route::get('/symlink', function () {
     Artisan::call('storage:link');
 
     return 'Storage link created';
+});
+
+// Account type selection routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/account/type/select', [AccountTypeController::class, 'show'])->name('account.type.select');
+    Route::post('/account/type/save', [AccountTypeController::class, 'save'])->name('account.type.save');
 });
