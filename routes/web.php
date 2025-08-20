@@ -26,6 +26,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\WorkerController;
 use App\Http\Controllers\AccountTypeController;
+use App\Http\Controllers\AccountSetupController;
 
 
 require __DIR__.'/auth.php';
@@ -306,4 +307,10 @@ Route::get('/symlink', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/account/type/select', [AccountTypeController::class, 'show'])->name('account.type.select');
     Route::post('/account/type/save', [AccountTypeController::class, 'save'])->name('account.type.save');
+});
+
+// Account setup flow
+Route::middleware(['auth'])->group(function () {
+    Route::get('/account/type/select', [AccountSetupController::class, 'showAccountType'])->name('account.type.select');
+    Route::post('/account/type/save', [AccountSetupController::class, 'updateAccountType'])->name('account.type.save');
 });
