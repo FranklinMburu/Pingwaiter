@@ -95,5 +95,6 @@ class Kernel extends HttpKernel
         'no.workers' => \App\Http\Middleware\PreventWorkersFromCustomer::class,
         'customer.login.redirect' => \App\Http\Middleware\RedirectCustomerToLogin::class,
         'account.type' => \App\Http\Middleware\RequireAccountTypeSelection::class,
+        'check.customer.ban' => \App\Http\Middleware\CheckCustomerBan::class,
     ];
 }

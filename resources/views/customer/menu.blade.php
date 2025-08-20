@@ -34,6 +34,9 @@
 @endpush
 
 @section('content')
+    @if(isset($customer) && $customer->isBanned())
+        <x-ban-notice :banReason="$customer->ban_reason" :contact="config('app.contact_email', 'support@example.com')" />
+    @endif
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <!-- Welcome Card -->
@@ -46,7 +49,7 @@
         <div class="content-card mb-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                @if ($restaurant['allow_place_order'])
+                @if ($restaurant['allow_place_order'] && (!isset($customer) || !$customer->isBanned()))
                     <!-- Place Order -->
                     <a href="{{ route('order.create', ['restaurant' => $restaurant['id'], 'table' => $tableCode]) }}"
                         class="flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl hover:from-blue-100 hover:to-indigo-100 transition-all">

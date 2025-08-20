@@ -89,16 +89,25 @@
 @endpush
 
 @section('content')
-    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="text-white text-lg font-bold animate-pulse">
-            Placing your order...
-        </div>
-    </div>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    @if(isset($customer) && $customer->isBanned())
+        <x-ban-notice :banReason="$customer->ban_reason" :contact="config('app.contact_email', 'support@example.com')" />
         <div class="content-card text-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900 mb-2">Table {{ $tableCode }}</h2>
         </div>
+        <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center text-red-700 font-semibold">
+            You cannot place orders while banned.
+        </div>
+    @else
+        <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="text-white text-lg font-bold animate-pulse">
+                Placing your order...
+            </div>
+        </div>
+
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="content-card text-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Table {{ $tableCode }}</h2>
+            </div>
 
         <div class="content-card mb-6">
             <div class="flex flex-wrap gap-3 mb-6">

@@ -93,16 +93,22 @@
 @endpush
 
 @section('content')
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <!-- Current Order -->
-        <div class="content-card mb-8">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-semibold text-gray-900">Current Order</h2>
-                <div class="text-right">
-                    <div class="text-sm text-gray-500">Order #{{ $order->id }}</div>
-                    <div class="text-sm text-gray-500">Placed at {{ $order->created_at->format('g:i A') }}</div>
+    @if(isset($customer) && $customer->isBanned())
+        <x-ban-notice :banReason="$customer->ban_reason" :contact="config('app.contact_email', 'support@example.com')" />
+        <div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center text-red-700 font-semibold mb-6">
+            You cannot view or manage orders while banned.
+        </div>
+    @else
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <!-- Current Order -->
+            <div class="content-card mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-semibold text-gray-900">Current Order</h2>
+                    <div class="text-right">
+                        <div class="text-sm text-gray-500">Order #{{ $order->id }}</div>
+                        <div class="text-sm text-gray-500">Placed at {{ $order->created_at->format('g:i A') }}</div>
+                    </div>
                 </div>
-            </div>
 
             <!-- Estimated Time -->
             <div class="bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl p-4 mb-6">
