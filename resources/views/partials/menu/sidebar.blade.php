@@ -30,7 +30,7 @@
 </div>
 
 <!-- Sidebar Navigation -->
-<nav class="mt-6">
+<nav class="mt-6 fixed top-0 left-0 h-full w-[280px] z-40 bg-body-light dark:bg-dark-body shadow-lg overflow-y-auto">
     <ul class="space-y-2">
         <!-- Dashboard Section -->
         <li class="px-4 mt-3">

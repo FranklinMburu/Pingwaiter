@@ -16,6 +16,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
@@ -27,7 +28,7 @@
         </div>
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
 
-            {{ $slot }}
+            @yield('content')
             <a href="{{ url('auth/google') }}"
                 style="display: inline-block; padding: 12px 24px; background-color: #4285F4; color: white; border-radius: 4px; text-align: center; text-decoration: none; font-size: 16px; font-weight: 600; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
                 Continue with Google

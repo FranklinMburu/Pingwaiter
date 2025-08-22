@@ -81,6 +81,11 @@ class User extends Authenticatable implements BannableContract, HasMedia
             'role' => 'required|in:admin,restaurant,waiter,cashier,cook',
         ];
     }
+    public function isCustomer(): bool
+    {
+        // 'customer' is not a valid role in this system
+        return false;
+    }
     /**
      * Relationship: The user who invited this user.
      */
