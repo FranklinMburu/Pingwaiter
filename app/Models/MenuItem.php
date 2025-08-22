@@ -55,5 +55,20 @@ class MenuItem extends Model
         return number_format($this->price, 2);
     }
 
-    // Image upload handling would be in controller/form request, not model
+    // Image upload handling
+    public function setImageAttribute($value)
+    {
+        if (is_file($value)) {
+            $path = $value->store('menu_items', 'public');
+            $this->attributes['image'] = $path;
+        } else {
+            $this->attributes['image'] = $value;
+        }
+    }
+
+    // Image URL accessor
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->image) : null;
+    }
 }
