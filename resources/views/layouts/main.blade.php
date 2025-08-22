@@ -46,7 +46,18 @@
     @stack('styles')
 </head>
 
+
 <body class="bg-gray-50 min-h-screen font-lato">
+    <!-- Header with Logo and Restaurant Name -->
+
+    <header class="w-full flex justify-center items-center px-4 py-3 bg-white shadow-sm mb-4 sm:px-8">
+        <a href="/" class="flex items-center gap-2">
+            <img src="{{ URL::asset('favicon.ico') }}" alt="Logo" class="h-8 w-8 sm:h-10 sm:w-10">
+            <span class="text-xl sm:text-2xl font-bold text-indigo-700 whitespace-nowrap truncate max-w-xs sm:max-w-md text-center" style="letter-spacing: 0.5px;">
+                {{ \App\Helpers\RestaurantHelper::getName() }}
+            </span>
+        </a>
+    </header>
 
     @if (session('success'))
         <div class="max-w-lg mx-auto mt-6 mb-2 px-4 py-3 bg-green-100 border border-green-300 text-green-800 rounded shadow">
