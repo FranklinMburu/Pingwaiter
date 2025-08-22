@@ -1,3 +1,40 @@
+// Admin Menu Management (Menu Categories & Items)
+use App\Http\Controllers\Admin\MenuController;
+Route::prefix('admin/menu')->middleware(['auth', 'admin'])->name('admin.menu.')->group(function () {
+    // Index
+    Route::get('/', [MenuController::class, 'index'])->name('index');
+
+    // Category CRUD
+    Route::get('/category/create', [MenuController::class, 'createCategory'])->name('createCategory');
+    Route::post('/category', [MenuController::class, 'storeCategory'])->name('storeCategory');
+    Route::get('/category/{category}/edit', [MenuController::class, 'editCategory'])->name('editCategory');
+    Route::put('/category/{category}', [MenuController::class, 'updateCategory'])->name('updateCategory');
+    Route::delete('/category/{category}', [MenuController::class, 'destroyCategory'])->name('destroyCategory');
+
+    // Item CRUD (nested under category)
+    Route::get('/category/{category}/item/create', [MenuController::class, 'createItem'])->name('createItem');
+    Route::post('/category/{category}/item', [MenuController::class, 'storeItem'])->name('storeItem');
+    Route::get('/category/{category}/item/{item}/edit', [MenuController::class, 'editItem'])->name('editItem');
+    Route::put('/category/{category}/item/{item}', [MenuController::class, 'updateItem'])->name('updateItem');
+    Route::delete('/category/{category}/item/{item}', [MenuController::class, 'destroyItem'])->name('destroyItem');
+
+    // Custom: Image upload (AJAX)
+    Route::post('/item/image-upload', [MenuController::class, 'imageUpload'])->name('imageUpload');
+
+    // Custom: Sorting update (AJAX)
+    Route::post('/sort', [MenuController::class, 'updateSort'])->name('updateSort');
+});
+
+// API endpoints for AJAX (status toggles, sorting, etc.)
+use Illuminate\Support\Facades\Route as RouteFacade;
+RouteFacade::prefix('api/admin/menu')->middleware(['auth', 'admin'])->name('api.admin.menu.')->group(function () {
+    // Toggle category active status
+    RouteFacade::post('/category/{category}/toggle', [MenuController::class, 'toggleCategoryStatus'])->name('toggleCategoryStatus');
+    // Toggle item available status
+    RouteFacade::post('/item/{item}/toggle', [MenuController::class, 'toggleItemStatus'])->name('toggleItemStatus');
+    // Update sorting (drag-and-drop)
+    RouteFacade::post('/sort', [MenuController::class, 'apiUpdateSort'])->name('apiUpdateSort');
+});
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiKeyController;
