@@ -7,10 +7,10 @@
             <span class="font-semibold">Table Number:</span> {{ $table->table_number }}
         </div>
         <div class="mb-4">
-            <img src="data:image/png;base64,{{ base64_encode($table->qr_code) }}" alt="QR Code" class="w-48 h-48 border rounded">
+            <img src="data:image/png;base64,{{ base64_encode($table->qr_code) }}" alt="QR Code" class="border rounded max-w-full h-auto">
         </div>
         <div>
-            <a href="{{ route('table.menu', ['table' => $table->id]) }}" class="btn btn-primary">Go to Customer Menu</a>
+            <a href="{{ route('table.menu', ['table' => $table->id]) }}" class="btn btn-primary" style="min-width:44px;min-height:44px;">Go to Customer Menu</a>
         </div>
     </div>
 </div>

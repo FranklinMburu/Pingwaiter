@@ -32,7 +32,7 @@
                 }
             ">
             <template x-if="imageUrl">
-                <img :src="imageUrl" class="w-24 h-24 object-cover rounded mt-2 border" alt="Preview">
+                <img :src="imageUrl" class="object-cover rounded mt-2 border max-w-full h-auto" alt="Preview">
             </template>
             @error('image')<div class="text-red-500 text-xs mt-1">{{ $message }}</div>@enderror
         </div>
@@ -46,8 +46,8 @@
             @error('sort_order')<div class="text-red-500 text-xs mt-1">{{ $message }}</div>@enderror
         </div>
         <div class="flex justify-end gap-2">
-            <a href="{{ route('admin.menu.index') }}" class="btn btn-secondary">Cancel</a>
-            <button class="btn btn-primary">Save</button>
+            <a href="{{ route('admin.menu.index') }}" class="btn btn-secondary" style="min-width:44px;min-height:44px;">Cancel</a>
+            <button class="btn btn-primary" style="min-width:44px;min-height:44px;">Save</button>
         </div>
     </form>
 </div>

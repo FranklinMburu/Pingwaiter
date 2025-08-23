@@ -19,10 +19,10 @@
                         </span>
                     </div>
                     <div class="flex gap-2">
-                        <a href="{{ route('admin.menu.editCategory', $category) }}" class="btn btn-xs btn-secondary">Edit</a>
+                        <a href="{{ route('admin.menu.editCategory', $category) }}" class="btn btn-xs btn-secondary" style="min-width:44px;min-height:44px;">Edit</a>
                         <form action="{{ route('admin.menu.destroyCategory', $category) }}" method="POST" onsubmit="return confirm('Delete this category?')">
                             @csrf @method('DELETE')
-                            <button class="btn btn-xs btn-danger">Delete</button>
+                            <button class="btn btn-xs btn-danger" style="min-width:44px;min-height:44px;">Delete</button>
                         </form>
                     </div>
                 </li>
@@ -46,7 +46,7 @@
                         <li class="bg-white rounded shadow p-3 flex items-center justify-between" draggable="true">
                             <div class="flex items-center gap-3">
                                 @if($item->image_url)
-                                <img src="{{ $item->image_url }}" class="w-10 h-10 object-cover rounded" alt="{{ $item->name }}">
+                                <img src="{{ $item->image_url }}" class="object-cover rounded max-w-full h-auto" alt="{{ $item->name }}">
                                 @endif
                                 <div>
                                     <div class="font-semibold">{{ $item->name }}</div>
@@ -54,10 +54,10 @@
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <a href="{{ route('admin.menu.editItem', [$category, $item]) }}" class="btn btn-xs btn-secondary">Edit</a>
+                                <a href="{{ route('admin.menu.editItem', [$category, $item]) }}" class="btn btn-xs btn-secondary" style="min-width:44px;min-height:44px;">Edit</a>
                                 <form action="{{ route('admin.menu.destroyItem', [$category, $item]) }}" method="POST" onsubmit="return confirm('Delete this item?')">
                                     @csrf @method('DELETE')
-                                    <button class="btn btn-xs btn-danger">Delete</button>
+                                    <button class="btn btn-xs btn-danger" style="min-width:44px;min-height:44px;">Delete</button>
                                 </form>
                             </div>
                         </li>

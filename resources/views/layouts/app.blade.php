@@ -76,29 +76,23 @@
     @vite(['resources/js/global-sound.js'])
 </head>
 
-<body
-    class="bg-body-light dark:bg-dark-body group-data-[theme-width=box]:container group-data-[theme-width=box]:max-w-screen-3xl xl:group-data-[theme-width=box]:px-3">
+
+<body class="bg-body-light dark:bg-dark-body group-data-[theme-width=box]:container group-data-[theme-width=box]:max-w-screen-3xl xl:group-data-[theme-width=box]:px-3">
     <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm">
         <div class="text-xl font-semibold text-gray-700 animate-pulse">Loading...</div>
     </div>
 
-
     @auth
         @include('partials.menu.topbar')
-
         @include('partials.menu.sidebar')
-
-        <div
-            class="main-content group-data-[sidebar-size=lg]:xl:ml-[calc(theme('spacing.app-menu')_+_16px)] group-data-[sidebar-size=sm]:xl:ml-[calc(theme('spacing.app-menu-sm')_+_16px)] group-data-[theme-width=box]:xl:px-0 px-3 xl:px-4 ac-transition">
+        <div class="main-content px-2 sm:px-4 xl:px-8">
             @yield('content')
         </div>
     @endauth
 
     <script src="{{ URL::asset('assets/js/vendor/jquery.min.js') }}"></script>
-    {{-- <script src="{{ URL::asset('assets/js/vendor/apexcharts.min.js') }}"></script> --}}
     <script src="{{ URL::asset('assets/js/vendor/flowbite.min.js') }}"></script>
     <script src="{{ URL::asset('assets/js/vendor/smooth-scrollbar/smooth-scrollbar.min.js') }}"></script>
-    {{-- <script src="{{ URL::asset('assets/js/pages/dashboard-lms.js') }}"></script> --}}
     <script src="{{ URL::asset('assets/js/component/app-menu-bar.js') }}"></script>
     <script src="{{ URL::asset('assets/js/component/tab.js') }}"></script>
     <script src="{{ URL::asset('assets/js/switcher.js') }}"></script>
@@ -106,40 +100,19 @@
     <script src="{{ URL::asset('assets/js/main.js') }}"></script>
 
     <script src="{{ asset('admintemplate/plugins/jquery/jquery.min.js') }}"></script>
-    <!-- jQuery UI 1.11.4 -->
     <script src="{{ asset('admintemplate/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <!-- SweetAlert2 -->
     <script src="{{ asset('admintemplate/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-    <!-- Toastr -->
     <script src="{{ asset('admintemplate/plugins/toastr/toastr.min.js') }}"></script>
     <script src="{{ asset('admintemplate/dist/js/script.js') }}"></script>
     <script src="{{ asset('admintemplate/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-    <!-- Core plugin JavaScript-->
     <script src="{{ asset('admintemplate/admin_bootstrap/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-
-    <!-- Custom scripts for all pages-->
-    {{-- <script src="{{ asset('admintemplate/admin_bootstrap/js/sb-admin-2.min.js') }}"></script> --}}
-
-    <!-- Page level admintemplate/plugins -->
     <script src="{{ asset('admintemplate/admin_bootstrap/vendor/chart.js/Chart.min.js') }}"></script>
-
-    <!-- Page level admintemplate/plugins -->
     <script src="{{ asset('admintemplate/admin_bootstrap/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('admintemplate/admin_bootstrap/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
     <script src="https://cdn.datatables.net/scroller/2.3.0/js/dataTables.scroller.min.js"></script>
-    <!-- Moment.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
-
-    <!-- Date Range Picker JS -->
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-
-
-    <!-- Page level custom scripts -->
     <script src="{{ asset('admintemplate/admin_bootstrap/js/demo/datatables-demo.js') }}"></script>
-    <!-- jQuery -->
-
-    <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('fancybox/fancybox.umd.js') }}"></script>
 
@@ -159,6 +132,24 @@
                     height: 14
                 });
             }
+        });
+        // Touch-friendly buttons and inputs
+        $(document).ready(function() {
+            $('button, input[type="submit"], input[type="button"], .btn').css({
+                'min-width': '44px',
+                'min-height': '44px',
+                'font-size': '1rem'
+            });
+            $('input, textarea, select').css({
+                'min-height': '44px',
+                'font-size': '1rem'
+            });
+            // Responsive tables
+            $('table').addClass('w-full block overflow-x-auto text-base');
+            // Responsive images
+            $('img').addClass('max-w-full h-auto');
+            // Readable text
+            $('body, .main-content, .card, .content-card').addClass('text-base');
         });
     </script>
 
