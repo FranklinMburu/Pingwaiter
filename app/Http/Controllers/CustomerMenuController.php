@@ -15,6 +15,48 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class CustomerMenuController extends Controller
 {
+    // ...existing code...
+    // Show menu items by category (new menu management)
+    public function viewMenu($categoryId)
+    {
+        $category = \App\Models\MenuCategory::active()->findOrFail($categoryId);
+        // Paginate items (20 per page)
+        $items = $category->menuItems()->available()->ordered()->paginate(20);
+        $tableId = session('table_id');
+        $tableNumber = session('table_number');
+        return view('customer.menu.category', compact('category', 'items', 'tableId', 'tableNumber'));
+    }
+    // Modern menu display for new menu management
+    public function showMenu($tableId)
+    {
+        $table = \App\Models\Table::find($tableId);
+        if (!$table) {
+            return response()->view('customer.menu.table_not_found', ['tableId' => $tableId], 404);
+        }
+        if (!$table->is_active) {
+            return response()->view('customer.menu.table_inactive', ['table' => $table], 403);
+        }
+        session(['table_id' => $table->id, 'table_number' => $table->table_number]);
+
+        $categories = \App\Models\MenuCategory::active()->ordered()->with(['menuItems' => function($q) {
+            $q->available()->ordered();
+        }])->get()->filter(function($cat) {
+            return $cat->menuItems->count() > 0;
+        })->values();
+
+        // Paginate categories (10 per page)
+        $page = request('page', 1);
+        $perPage = 10;
+        $categories = new \Illuminate\Pagination\LengthAwarePaginator(
+            $categories->forPage($page, $perPage),
+            $categories->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+
+        return view('customer.menu.show', compact('table', 'categories'));
+    }
     public function create($tableId)
     {
         $table = Table::with('restaurant')->where('table_code', $tableId)->firstOrFail();

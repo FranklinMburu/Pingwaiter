@@ -1,3 +1,4 @@
+<?php
 // Admin Table QR Code Display
 use App\Models\Table;
 Route::middleware(['auth', 'admin'])->get('/admin/tables/{table}/show', function (Table $table) {
@@ -40,7 +41,6 @@ RouteFacade::prefix('api/admin/menu')->middleware(['auth', 'admin'])->name('api.
     // Update sorting (drag-and-drop)
     RouteFacade::post('/sort', [MenuController::class, 'apiUpdateSort'])->name('apiUpdateSort');
 });
-<?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\Auth\GoogleController;

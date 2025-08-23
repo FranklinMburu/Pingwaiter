@@ -109,42 +109,41 @@
                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Table {{ $tableCode }}</h2>
             </div>
 
-        <div class="content-card mb-6">
-            <div class="flex flex-wrap gap-3 mb-6">
+        <!-- Sticky Category Navigation -->
+        <div class="content-card mb-6 sticky top-16 z-40 bg-white/90 backdrop-blur-lg">
+            <div class="flex flex-wrap gap-3 mb-6 justify-center">
                 @foreach ($categories as $cat)
-                    <button class="category-btn {{ $loop->first ? 'active' : '' }}"
-                        onclick="showCategory('{{ Str::slug($cat->name) }}')">
+                    <a href="#{{ Str::slug($cat->name) }}" class="category-btn {{ $loop->first ? 'active' : '' }}" onclick="scrollToCategory('{{ Str::slug($cat->name) }}', event)">
                         {{ $cat->name }}
-                    </button>
+                    </a>
                 @endforeach
             </div>
         </div>
 
         @foreach ($categories as $cat)
-            <div id="{{ Str::slug($cat->name) }}" class="category-section {{ !$loop->first ? 'hidden' : '' }}">
+            <div id="{{ Str::slug($cat->name) }}" class="category-section scroll-mt-24">
                 <div class="content-card">
                     <h3 class="text-xl font-semibold text-gray-900 mb-6">{{ $cat->name }}</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         @foreach ($cat->foodItems as $item)
-                            <div class="menu-item p-4">
+                            <div class="menu-item p-4 flex flex-col">
                                 <div class="flex gap-4">
                                     <img src="{{ isset($item->picture[0]) ? asset('uploads/food/pictures/' . $item->picture[0]) : asset('placeholder.svg') }}"
-                                        alt="{{ $item->name }}" class="w-20 h-20 rounded-lg object-cover">
+                                        alt="{{ $item->name }}" class="w-20 h-20 rounded-lg object-cover" onerror="this.onerror=null;this.src='{{ asset('placeholder.svg') }}';">
                                     <div class="flex-1">
                                         <h4 class="font-semibold text-gray-900 mb-1">{{ $item->name }}</h4>
                                         <p class="text-sm text-gray-600 mb-2">{{ $item->description }}</p>
-                                        <div class="flex items-center justify-between">
-                                            <span
-                                                class="text-lg font-bold text-gray-900">{{ $restaurant['currency_symbol'] }}
-                                                {{ $item->price }}</span>
-                                            <div class="flex items-center gap-2">
-                                                <button class="quantity-btn bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                                    onclick="decreaseQuantity('{{ $item->item_code }}')">-</button>
-                                                <span id="{{ $item->item_code }}-qty"
-                                                    class="w-8 text-center font-medium">0</span>
-                                                <button class="quantity-btn bg-purple-500 text-white hover:bg-purple-600"
-                                                    onclick="increaseQuantity('{{ $item->item_code }}', '{{ $item->name }}', {{ $item->price }})">+</button>
-                                            </div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-lg font-bold text-gray-900">{{ $restaurant['currency_symbol'] }} {{ number_format($item->price, 2) }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <button class="quantity-btn bg-gray-100 text-gray-600 hover:bg-gray-200" style="min-width:44px;min-height:44px;"
+                                                onclick="decreaseQuantity('{{ $item->item_code }}')">-</button>
+                                            <span id="{{ $item->item_code }}-qty" class="w-8 text-center font-medium">0</span>
+                                            <button class="quantity-btn bg-purple-500 text-white hover:bg-purple-600" style="min-width:44px;min-height:44px;"
+                                                onclick="increaseQuantity('{{ $item->item_code }}', '{{ $item->name }}', {{ $item->price }})">+</button>
+                                            <button class="ml-2 px-4 py-2 bg-green-500 hover:bg-green-600 rounded-xl text-white font-semibold text-sm add-to-cart-btn" style="min-width:44px;min-height:44px;"
+                                                onclick="addToCart('{{ $item->item_code }}', '{{ $item->name }}', {{ $item->price }})">Add to Cart</button>
                                         </div>
                                     </div>
                                 </div>
@@ -156,20 +155,19 @@
         @endforeach
     </main>
 
-    <div class="cart-floating show flex-col w-full" id="cartFloating">
+    <!-- Sticky Floating Cart -->
+    <div class="cart-floating show flex-col w-full sticky bottom-0 left-0 z-50" id="cartFloating">
         <div class="flex items-center justify-between w-full mb-2 px-4">
             <div class="flex items-center gap-2">
                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                        d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z" />
+                    <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z" />
                 </svg>
                 <span id="cartText">View Cart</span>
                 <div class="bg-white bg-opacity-20 rounded-full px-2 py-1 text-sm font-bold" id="cartCount">0</div>
             </div>
         </div>
-
         <button onclick="submitOrder()"
-            class="w-full px-4 py-3 bg-green-500 hover:bg-green-600 rounded-xl text-white font-semibold">
+            class="w-full px-4 py-3 bg-green-500 hover:bg-green-600 rounded-xl text-white font-semibold" style="min-width:44px;min-height:44px;">
             Place Order
         </button>
     </div>
@@ -181,17 +179,28 @@
         let cartTotal = 0;
         let cartItemCount = 0;
 
-        function showCategory(category) {
-            document.querySelectorAll('.category-section').forEach(section => {
-                section.classList.add('hidden');
-            });
-
-            document.getElementById(category).classList.remove('hidden');
-
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+        function scrollToCategory(categoryId, event) {
+            event.preventDefault();
+            const el = document.getElementById(categoryId);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
+        }
+
+        function addToCart(itemId, itemName, price) {
+            if (!cart[itemId]) {
+                cart[itemId] = {
+                    name: itemName,
+                    price: price,
+                    quantity: 1
+                };
+            } else {
+                cart[itemId].quantity++;
+            }
+            updateQuantityDisplay(itemId);
+            updateCart();
         }
 
         function increaseQuantity(itemId, itemName, price) {
