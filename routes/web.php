@@ -145,34 +145,37 @@ Route::get('/customer/login', [LoginController::class, 'customerLogin'])->name('
 // Restaurant Login
 Route::get('/restaurant/login', [LoginController::class, 'restaurantLogin'])->name('restaurant.login');
 
-// Customer Menu
-Route::get('/generate-qr/{table}', [CustomerMenuController::class, 'generateQr'])
-    ->name('table.qr');
 
-Route::group(['middleware' => ['auth', 'check.customer.email.ban', 'customer.login.redirect', 'no.workers']], function () {
-    // Customer Menu
-    Route::get('/test/table/{table}/menu', [CustomerMenuController::class, 'show'])
-        ->name('table.menu.test');
+// PUBLIC CUSTOMER MENU ROUTES (no auth required)
+// Public customer menu routes with constraints
+Route::get('/menu/{table}', [CustomerMenuController::class, 'showMenu'])
+    ->where('table', '[0-9]+')
+    ->name('customer.menu.public');
+Route::get('/menu/{table}/category/{category}', [CustomerMenuController::class, 'viewMenu'])
+    ->where(['table' => '[0-9]+', 'category' => '[0-9]+'])
+    ->name('customer.menu.category');
 
-    Route::get('/table/{table}/menu', [CustomerMenuController::class, 'show'])
-        ->name('table.menu');
-
-    Route::post('/table/{table}/ping', [CustomerMenuController::class, 'ping'])
-        ->name('table.ping');
-
-    Route::post('/table/{table}/repeat/{order}', [CustomerMenuController::class, 'repeat'])->name('orders.repeat');
-
-    Route::get('/restaurant/table/{table}/order', [CustomerMenuController::class, 'create'])
-        ->name('order.create');
-    Route::post('/customer/order/store/{table}', [CustomerMenuController::class, 'store'])
-        ->name('order.store');
-
-    Route::get('/customer/{table}/orders/{order}/status', [CustomerOrderController::class, 'status'])->name('customer.orders.status');
-    Route::get('/customer/{table}/orders/history', [CustomerOrderController::class, 'history'])->name('customer.orders.history');
-
-    // Customer Contact
-    Route::get('/customer/{table}/contact', [ContactController::class, 'index'])->name('customer.contact');
-    Route::post('/customer/contact', [ContactController::class, 'submit'])->name('customer.contact.submit');
+// QR CODE GENERATION FOR ADMIN (requires auth & admin)
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/tables/{table}/qr', [CustomerMenuController::class, 'generateQr'])
+        ->where('table', '[0-9]+')
+        ->name('admin.tables.qr');
+    // Table management interface
+    Route::get('/admin/tables', [TableController::class, 'index'])->name('admin.tables.index');
+    Route::get('/admin/tables/create', [TableController::class, 'create'])->name('admin.tables.create');
+    Route::post('/admin/tables', [TableController::class, 'store'])->name('admin.tables.store');
+    Route::get('/admin/tables/{table}/edit', [TableController::class, 'edit'])
+        ->where('table', '[0-9]+')
+        ->name('admin.tables.edit');
+    Route::put('/admin/tables/{table}', [TableController::class, 'update'])
+        ->where('table', '[0-9]+')
+        ->name('admin.tables.update');
+    Route::delete('/admin/tables/{table}', [TableController::class, 'destroy'])
+        ->where('table', '[0-9]+')
+        ->name('admin.tables.destroy');
+    Route::get('/admin/tables/{table}/download-qr', [TableController::class, 'downloadQr'])
+        ->where('table', '[0-9]+')
+        ->name('admin.tables.downloadQr');
 });
 
 Route::group(['middleware' => ['auth', 'check.customer.ban', 'no.customers', 'restrict.demo']], function () {
