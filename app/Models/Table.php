@@ -12,10 +12,27 @@ class Table extends Model
 
     protected $table = 'tables';
 
-    protected $fillable = ['table_code', 'size', 'location', 'description', 'picture', 'restaurant_id', 'status'];
+    protected $fillable = [
+        'table_number',
+        'qr_code',
+        'is_active',
+    ];
 
-    public function restaurant(): BelongsTo
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
+    public static function rules($id = null)
     {
-        return $this->belongsTo(Restaurant::class);
+        return [
+            'table_number' => 'required|string|max:255|unique:tables,table_number,' . ($id ?? 'NULL') . ',id',
+            'qr_code' => 'required|string',
+            'is_active' => 'boolean',
+        ];
+    }
+
+    public function generateQrCode($content)
+    {
+        return app(\App\Services\TableQrCodeService::class)->generate($content);
     }
 }
