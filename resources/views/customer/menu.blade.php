@@ -362,3 +362,46 @@
         }
     </script>
 @endpush
+
+@php
+    $isAcceptingOrders = $restaurant['is_accepting_orders'] ?? true;
+    $closedMessage = $restaurant['closed_message'] ?? 'Restaurant is currently closed.';
+@endphp
+
+<div x-data="{ accepting: {{ $isAcceptingOrders ? 'true' : 'false' }}, closedMessage: '{{ $closedMessage }}', loading: false, error: false }"
+     x-init="setInterval(() => { loading = true; error = false; fetch('/api/restaurant/status').then(r => r.json()).then(data => { accepting = data.is_accepting_orders; closedMessage = data.closed_message; loading = false; }).catch(() => { error = true; loading = false; }); }, 30000)">
+    <template x-if="loading">
+        <div class="flex flex-col items-center animate-pulse">
+            <button class="floating-btn bg-gray-300 text-gray-600 font-bold border-2 border-gray-400 cursor-wait" aria-label="Checking restaurant status..." disabled>
+                <div class="menu-tooltip">Checking status...</div>
+                <svg class="animate-spin h-6 w-6 text-gray-600" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+            </button>
+        </div>
+    </template>
+    <template x-if="error">
+        <div class="flex flex-col items-center">
+            <button class="floating-btn bg-red-500 text-white font-bold border-2 border-red-700 animate-shake" aria-label="Status check failed" disabled>
+                <div class="menu-tooltip">Status check failed</div>
+                <i class="bi bi-exclamation-triangle text-3xl"></i>
+            </button>
+            <div class="mt-2 text-red-600 font-semibold text-center">Unable to check restaurant status. Please try again later.</div>
+        </div>
+    </template>
+    <template x-if="!loading && !error && accepting">
+        <a href="{{ route('order.create', ['restaurant' => $restaurant['id'], 'table' => $tableCode]) }}"
+            class="floating-btn bg-green-500 hover:bg-green-600 text-white font-bold border-2 border-green-700 transition-all duration-300" title="Place Order" aria-label="Place Order">
+            <div class="menu-tooltip">Place Order</div>
+            <i class="bi bi-plus-circle text-3xl"></i>
+        </a>
+    </template>
+    <template x-if="!loading && !error && !accepting">
+        <div class="flex flex-col items-center animate-fade-in">
+            <a href="#menu"
+                class="floating-btn bg-gray-400 hover:bg-gray-500 text-white font-bold border-2 border-gray-700 transition-all duration-300" title="View Menu" aria-label="View Menu">
+                <div class="menu-tooltip">View Menu</div>
+                <i class="bi bi-eye text-3xl"></i>
+            </a>
+            <div class="mt-2 text-red-600 font-semibold text-center" x-text="closedMessage"></div>
+        </div>
+    </template>
+</div>
