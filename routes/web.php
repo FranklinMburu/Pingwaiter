@@ -1,3 +1,8 @@
+// Admin Table QR Code Display
+use App\Models\Table;
+Route::middleware(['auth', 'admin'])->get('/admin/tables/{table}/show', function (Table $table) {
+    return view('admin.tables.show', compact('table'));
+})->name('admin.tables.show');
 // Admin Menu Management (Menu Categories & Items)
 use App\Http\Controllers\Admin\MenuController;
 Route::prefix('admin/menu')->middleware(['auth', 'admin'])->name('admin.menu.')->group(function () {

@@ -31,8 +31,9 @@ class Table extends Model
         ];
     }
 
-    public function generateQrCode($content)
+    public function generateQrCode()
     {
-        return app(\App\Services\TableQrCodeService::class)->generate($content);
+        $url = route('table.menu', ['table' => $this->id]);
+        return app(\App\Services\TableQrCodeService::class)->generate($url);
     }
 }
