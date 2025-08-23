@@ -6,6 +6,8 @@ use App\Enums\OrderStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
@@ -13,32 +15,23 @@ class Order extends Model
 
     protected $table = 'orders';
 
-    protected $casts = [
-        'status' => OrderStatus::class,
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+    protected $fillable = [
+        'customer_id',
+        'table_id',
+        'order_number',
+        'status',
+        'subtotal',
+        'tax_amount',
+        'total_amount',
+        'notes',
     ];
 
-    protected $fillable = [
-        'item_id',
-        'user_id',
-        'group_number',
-        'approved_by',
-        'prepared_by',
-        'delivered_by',
-        'completed_by',
-        'table_id',
-        'quantity',
-        'price',
-        'remark',
-        'status',
-        'paid_status',
-        'cookie_code',
-        'style',
-        'ip_address',
-        'is_banned',
-        'created_at',
-        'updated_at',
+    protected $casts = [
+        'subtotal' => 'decimal:2',
+        'tax_amount' => 'decimal:2',
+        'total_amount' => 'decimal:2',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     protected $appends = ['style_name', 'date'];
@@ -100,6 +93,79 @@ class Order extends Model
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    // Status scopes
+    public function scopePending($query) { return $query->where('status', 'pending'); }
+    public function scopeConfirmed($query) { return $query->where('status', 'confirmed'); }
+    public function scopePreparing($query) { return $query->where('status', 'preparing'); }
+    public function scopeReady($query) { return $query->where('status', 'ready'); }
+    public function scopeDelivered($query) { return $query->where('status', 'delivered'); }
+    public function scopePaid($query) { return $query->where('status', 'paid'); }
+    public function scopeCancelled($query) { return $query->where('status', 'cancelled'); }
+
+    // Generate order number
+    public static function generateOrderNumber(): string
+    {
+        return strtoupper(Str::random(10));
+    }
+
+    // Calculate totals
+    public function calculateSubtotal(): float
+    {
+        return $this->items->sum('total_price');
+    }
+    public function calculateTax(float $rate = 0.0): float
+    {
+        return round($this->calculateSubtotal() * $rate, 2);
+    }
+    public function calculateTotal(): float
+    {
+        return round($this->calculateSubtotal() + $this->tax_amount, 2);
+    }
+
+    // Validation rules
+    public static function rules(): array
+    {
+        return [
+            'customer_id' => 'required|exists:users,id',
+            'table_id' => 'required|exists:tables,id',
+            'order_number' => 'required|unique:orders,order_number',
+            'status' => 'required|in:pending,confirmed,preparing,ready,delivered,paid,cancelled',
+            'subtotal' => 'required|numeric|min:0',
+            'tax_amount' => 'required|numeric|min:0',
+            'total_amount' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
+        ];
+    }
+
+    // Status transition methods
+    public function canTransitionTo($newStatus): bool
+    {
+        $valid = [
+            'pending' => ['confirmed', 'cancelled'],
+            'confirmed' => ['preparing', 'cancelled'],
+            'preparing' => ['ready', 'cancelled'],
+            'ready' => ['delivered', 'cancelled'],
+            'delivered' => ['paid', 'cancelled'],
+            'paid' => [],
+            'cancelled' => [],
+        ];
+        return in_array($newStatus, $valid[$this->status] ?? []);
+    }
+    public function transitionStatus($newStatus): bool
+    {
+        if ($this->canTransitionTo($newStatus)) {
+            $this->status = $newStatus;
+            $this->save();
+            return true;
+        }
+        return false;
     }
 }
