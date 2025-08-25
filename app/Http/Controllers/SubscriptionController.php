@@ -17,7 +17,7 @@ class SubscriptionController extends Controller
             $paypalConfig = config('paypal');
             $sandboxId = $paypalConfig['sandbox']['client_id'] ?? null;
             $liveId = $paypalConfig['live']['client_id'] ?? null;
-            // Only initialize PayPal if config is present
+            // Only initialize PayPal if config is present to avoid errors in non-subscription environments
             if (!empty($sandboxId) || !empty($liveId)) {
                 $this->provider = new PayPalClient;
                 $this->provider->setApiCredentials($paypalConfig);
@@ -25,6 +25,7 @@ class SubscriptionController extends Controller
             } else {
                 $this->provider = null;
             }
+
     }
 
     public function index()
