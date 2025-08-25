@@ -154,6 +154,10 @@ Route::get('/menu/{table}', [CustomerMenuController::class, 'showMenu'])
 Route::get('/menu/{table}/category/{category}', [CustomerMenuController::class, 'viewMenu'])
     ->where(['table' => '[0-9]+', 'category' => '[0-9]+'])
     ->name('customer.menu.category');
+// Route for table.menu (fixes RouteNotFoundException)
+Route::get('/table/{table}/menu', [CustomerMenuController::class, 'showMenu'])
+    ->where('table', '[0-9]+')
+    ->name('table.menu');
 
 // QR CODE GENERATION FOR ADMIN (requires auth & admin)
 Route::middleware(['auth', 'admin'])->group(function () {

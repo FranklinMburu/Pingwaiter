@@ -14,9 +14,17 @@ class SubscriptionController extends Controller
 
     public function __construct()
     {
-        $this->provider = new PayPalClient;
-        $this->provider->setApiCredentials(config('paypal'));
-        $this->provider->getAccessToken();
+            $paypalConfig = config('paypal');
+            $sandboxId = $paypalConfig['sandbox']['client_id'] ?? null;
+            $liveId = $paypalConfig['live']['client_id'] ?? null;
+            // Only initialize PayPal if config is present
+            if (!empty($sandboxId) || !empty($liveId)) {
+                $this->provider = new PayPalClient;
+                $this->provider->setApiCredentials($paypalConfig);
+                $this->provider->getAccessToken();
+            } else {
+                $this->provider = null;
+            }
     }
 
     public function index()

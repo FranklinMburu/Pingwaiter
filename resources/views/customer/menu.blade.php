@@ -30,6 +30,36 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-info {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .btn-info:hover {
+            background-color: #2563eb;
+            transform: translateY(-1px);
+        }
     </style>
 @endpush
 
@@ -89,9 +119,31 @@
             </div>
         </div>
 
+        <!-- Order Status Summary in Header -->
+        @if($orders->count())
+            <div class="content-card mb-4 flex flex-col md:flex-row items-center justify-between bg-blue-50">
+                <div class="flex flex-col md:flex-row items-center gap-2">
+                    <span class="font-bold text-blue-700">Active Orders:</span>
+                    @foreach($orders as $order)
+                        <span class="badge px-2 py-1 rounded {{ $order->status == 'pending' ? 'bg-yellow-200 text-yellow-800' : ($order->status == 'confirmed' ? 'bg-blue-200 text-blue-800' : ($order->status == 'preparing' ? 'bg-orange-200 text-orange-800' : ($order->status == 'ready' ? 'bg-green-200 text-green-800' : ($order->status == 'delivered' ? 'bg-purple-200 text-purple-800' : ($order->status == 'paid' ? 'bg-gray-200 text-gray-800' : 'bg-red-200 text-red-800'))))) }}">
+                            #{{ $order->order_number }}: {{ ucfirst($order->status) }}
+                        </span>
+                        @if($order->hasNewStatus)
+                            <span class="inline-block ml-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full animate-pulse">New</span>
+                        @endif
+                    @endforeach
+                </div>
+                <div class="flex gap-2 mt-2 md:mt-0">
+                    @foreach($orders as $order)
+                        <a href="{{ route('customer.orders.status', ['order' => $order->id, 'table' => $tableCode]) }}" class="btn btn-info px-3 py-1 rounded text-xs">View Order Status</a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        <!-- Recent Orders (multiple order handling) -->
         <div class="content-card mb-6">
             <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Orders</h3>
-
             @if ($orders->count())
                 <div class="space-y-4">
                     @foreach ($orders as $order)
@@ -99,7 +151,6 @@
                             class="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-all">
                             <img src="/uploads/food/pictures/{{ $order->item->picture[0] }}" alt="Food Image"
                                 class="w-16 h-16 object-cover rounded-lg shadow mr-4">
-
                             <div class="flex-1">
                                 <h4 class="font-medium text-gray-800">Order #{{ $order->id }}</h4>
                                 <p class="text-sm text-gray-600">
@@ -108,9 +159,11 @@
                                 <p class="text-xs text-gray-400 mt-1">
                                     {{ $order->created_at->format('h:i A') }} — Status:
                                     <span class="font-semibold">{{ $order->status->label() }}</span>
+                                    @if($order->hasNewStatus)
+                                        <span class="inline-block ml-1 bg-red-500 text-white text-xs px-2 py-1 rounded-full animate-pulse">New</span>
+                                    @endif
                                 </p>
                             </div>
-
                             <i class="bi bi-chevron-right text-gray-400 text-xl"></i>
                         </a>
                     @endforeach
@@ -369,7 +422,7 @@
 @endphp
 
 <div x-data="{ accepting: {{ $isAcceptingOrders ? 'true' : 'false' }}, closedMessage: '{{ $closedMessage }}', loading: false, error: false }"
-     x-init="setInterval(() => { loading = true; error = false; fetch('/api/restaurant/status').then(r => r.json()).then(data => { accepting = data.is_accepting_orders; closedMessage = data.closed_message; loading = false; }).catch(() => { error = true; loading = false; }); }, 30000)">
+     x-init="setInterval(() => { loading = true; error = false; fetch('/api/restaurant/status').then(r => r.json()).then data => { accepting = data.is_accepting_orders; closedMessage = data.closed_message; loading = false; }).catch(() => { error = true; loading = false; }); }, 30000)">
     <template x-if="loading">
         <div class="flex flex-col items-center animate-pulse">
             <button class="floating-btn bg-gray-300 text-gray-600 font-bold border-2 border-gray-400 cursor-wait" aria-label="Checking restaurant status..." disabled>

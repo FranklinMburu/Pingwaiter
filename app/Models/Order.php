@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
+use App\Events\OrderStatusUpdated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -159,11 +160,32 @@ class Order extends Model
         ];
         return in_array($newStatus, $valid[$this->status] ?? []);
     }
-    public function transitionStatus($newStatus): bool
+    public function transitionStatus($newStatus, $userId = null): bool
     {
         if ($this->canTransitionTo($newStatus)) {
+            $oldStatus = $this->status;
             $this->status = $newStatus;
+            // Timestamping
+            $timestampField = $newStatus . '_at';
+            if (in_array($timestampField, $this->getFillable())) {
+                $this->$timestampField = now();
+            }
+            // Cancellation logic
+            if ($newStatus === 'cancelled') {
+                $this->cancelled_by = $userId;
+                $this->cancelled_at = now();
+            }
             $this->save();
+            // Audit log
+            OrderStatusLog::create([
+                'order_id' => $this->id,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'changed_by' => $userId,
+                'changed_at' => now(),
+            ]);
+            // Notification
+            event(new OrderStatusUpdated($this->id, $newStatus));
             return true;
         }
         return false;
